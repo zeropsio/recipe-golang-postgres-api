@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"net/http"
 	"os"
 	"strconv"
 
@@ -50,7 +51,10 @@ func main() {
 	e := echo.New()
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.Logger())
-	e.Use(middleware.CORS())
+
+	cors := middleware.DefaultCORSConfig
+	cors.AllowMethods = append(cors.AllowMethods, http.MethodPatch)
+	e.Use(middleware.CORSWithConfig(cors))
 
 	g := e.Group("todos")
 	g.GET("", handler.getTodos)
