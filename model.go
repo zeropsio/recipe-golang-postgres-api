@@ -42,7 +42,7 @@ func (t TodoRepository) FindOne(ctx context.Context, id int) (Todo, bool, error)
 
 func (t TodoRepository) FindAll(ctx context.Context) ([]Todo, error) {
 	var todos []Todo
-	err := pgxscan.Select(ctx, t.conn, &todos, `SELECT id, completed, text FROM todos`)
+	err := pgxscan.Select(ctx, t.conn, &todos, `SELECT id, completed, text FROM todos ORDER BY id DESC`)
 	return todos, err
 }
 
